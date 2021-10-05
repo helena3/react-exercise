@@ -6,8 +6,24 @@ import { Button, CardActionArea, CardActions, CardHeader } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { Link } from 'react-router-dom';
 
-export const UserCard = (props: any) => {
-  const user = props.userData;
+interface UserData  {
+  id: number;
+  name: string;
+  thumbnail: string;
+  age: number;
+  weight: number;
+  height: number;
+  hair_color: string;
+  professions: any[];
+  friends: string[];
+}
+
+interface Props {
+  userData: UserData;
+}
+
+const UserCard: React.FunctionComponent<Props> = (props) => {
+  const user: UserData = props.userData;
   const isProfessions: string =
     user.professions.length !== 0 ? 'inline' : 'none';
   const bold = {
@@ -63,3 +79,5 @@ export const UserCard = (props: any) => {
     </Card>
   );
 };
+
+export default UserCard;

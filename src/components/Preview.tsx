@@ -1,13 +1,25 @@
-import { Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { UserCard } from './UserCard';
+import { Grid } from '@mui/material';
+import UserCard from './UserCard';
 
-const Preview = () => {
+export interface User {
+  id: number;
+  name: string;
+  thumbnail: string;
+  age: number;
+  weight: number;
+  height: number;
+  hair_color: string;
+  professions: string[];
+  friends: string[];
+}
+
+const Preview: React.FunctionComponent = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   const fetchUsers = async () => {
     const url =

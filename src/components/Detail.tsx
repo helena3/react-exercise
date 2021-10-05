@@ -1,11 +1,49 @@
+import React, { useEffect, useState } from 'react';
 import { Avatar, Button, Container, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
+import { User } from './Preview';
 
-const Detail = (props: any) => {
-  const id = props.match.params.id;
+interface Location {
+  pathname: string;
+  search: string;
+  hash: string;
+  key: string;
+}
+
+interface History {
+  length: number;
+  action: string;
+  location: Location;
+}
+
+interface Location2 {
+  pathname: string;
+  search: string;
+  hash: string;
+  key: string;
+}
+
+interface Params {
+  id: string;
+}
+
+interface Match {
+  path: string;
+  url: string;
+  isExact: boolean;
+  params: Params;
+}
+
+interface Props {
+  history: History;
+  location: Location2;
+  match: Match;
+}
+
+const Detail: React.FunctionComponent<Props> = (props) => {
+  const id: number = Number(props.match.params.id);
   const bold = {
     fontWeight: 700,
   };
@@ -14,8 +52,18 @@ const Detail = (props: any) => {
     fetchUserData(id);
   }, [id]);
 
-  const [detail, setDetail] = useState<any>({});
-  const [friends, setFriends] = useState<any>([]);
+  const [detail, setDetail] = useState<User>({
+    id: 0,
+    name: '',
+    thumbnail: '',
+    age: 0,
+    weight: 0,
+    height: 0,
+    hair_color: '',
+    professions: [],
+    friends: []
+  });
+  const [friends, setFriends] = useState<User[]>([]);
 
   const fetchUserData = async (userId: number) => {
     const url =
@@ -23,11 +71,11 @@ const Detail = (props: any) => {
     const response = await fetch(url);
     const data = await response.json();
     const users = data.Brastlewark;
-    const userData = users.find((data: any) => data.id === Number(userId));
-
+    
+    const userData = users.find((data: User) => data.id === Number(userId));
     const userFriends = userData.friends
-      .map((el: string) => users.find((item: any) => item.name === el))
-      .filter((y: any) => y !== undefined);
+      .map((el: string) => users.find((item: User) => item.name === el))
+      .filter((y: User) => y !== undefined);
 
     setDetail(userData);
     setFriends(userFriends);
@@ -73,15 +121,15 @@ const Detail = (props: any) => {
         color='text.primary'
         gutterBottom
       >
-        <span style={{ display: isProfession, fontWeight: 700 }}>
-          Profession:{' '}
-        </span>
-        {detail.professions &&
-          detail.professions.map((profession: string) => (
-            <ul>
+        <div style={{ display: isProfession, fontWeight: 700 }}>
+          Profession:
+        </div>
+        <ul>
+          {detail.professions &&
+            detail.professions.map((profession: string) => (
               <li key={profession}>{profession}</li>
-            </ul>
-          ))}
+            ))}
+        </ul>
       </Typography>
       <Typography variant='body1' color='text.primary' gutterBottom>
         <span style={bold}>Age:</span> {detail.age}
@@ -101,14 +149,14 @@ const Detail = (props: any) => {
         color='text.primary'
         gutterBottom
       >
-        <span style={{ display: isFriend, fontWeight: 700 }}>Friends: </span>
-        {friends.map((friend: any) => (
-          <ul>
+        <div style={{ display: isFriend, fontWeight: 700 }}>Friends: </div>
+        <ul>
+          {friends.map((friend: User) => (
             <li key={friend.name}>
               <Link to={`/detail/${friend.id}`}>{friend.name}</Link>
             </li>
-          </ul>
-        ))}
+          ))}
+        </ul>
       </Typography>
     </Container>
   );
