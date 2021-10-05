@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Typography } from '@mui/material';
+import { CircularProgress, Grid, Typography } from '@mui/material';
 import UserCard from './UserCard';
 
 export interface User {
@@ -19,17 +19,31 @@ const Preview: React.FunctionComponent = () => {
     fetchUsers();
   }, []);
 
+  const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
 
   const fetchUsers = async () => {
+    setLoading(true);
     const url =
       'https://raw.githubusercontent.com/rrafols/mobile_test/master/data.json';
     const data = await fetch(url);
     const users = await data.json();
     setUsers(users.Brastlewark);
+    setLoading(false);
   };
 
-  return (
+  return loading ? (
+    <div
+      style={{
+        alignItems: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        height: '100vh',
+      }}
+    >
+      <CircularProgress disableShrink />
+    </div>
+  ) : (
     <div>
       <Typography
         variant='h4'
