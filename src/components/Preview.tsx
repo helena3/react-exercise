@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import UserCard from './UserCard';
 
 export interface User {
@@ -31,7 +31,14 @@ const Preview: React.FunctionComponent = () => {
 
   return (
     <div>
-      <h1>Preview Users</h1>
+      <Typography
+        variant='h4'
+        color='text.primary'
+        align='center'
+        sx={{ mb: 4, mt: 4 }}
+      >
+        Preview Users
+      </Typography>
       <Grid container spacing={4} sx={{ mb: 4 }}>
         {users.map((user) => (
           <Grid key={user.id} item xs={12} sm={6} md={4}>
